@@ -1,0 +1,7 @@
+.filters {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+}

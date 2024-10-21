@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+
+.homepage {
+  font-family: 'Exo 2', sans-serif;
+  text-align: center;
+}
+
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  background-color: #000;
+  color: #fff;
+}
+
+.hero-image img {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  width: 50%;
+  height: 50%;
+  object-fit: cover;
+}
+
+.hero-content {
+  position: absolute;
+  top: 55%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+}
+
+.h1{
+  
+  font-style: italic;
+  color: rgb(255, 255, 255); /* Цвет текста */
+  font-weight: 600;
+  padding: 5px 10px; /* Отступы внутри текста */
+}
+
+.h2{
+  font-style: italic;
+  color: rgb(255, 255, 255); /* Цвет текста */
+  font-weight: 600;
+  padding: 5px 10px; /* Отступы внутри текста */
+}
+
+
+.hero-buttons button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px; /* Размер текста */
+  font-weight: 700; /* Толщина шрифта */
+  color: #000; /* Цвет текста */
+  background-color: #fff;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase; /* Все буквы в верхнем регистре */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.hero-buttons button:hover {
+  color: #ffffff; /* Цвет текста */
+  background-color: #212020; /* Изменение фона при наведении */
+}
+
+.product-section {
+  padding: 50px 0;
+}
+
+.title {
+  position: static;
+  color: rgb(0, 0, 0); /* Цвет текста */
+  font-weight: 700;
+  padding: 5px 10px; /* Отступы внутри текста */
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.product-item {
+  position: relative; /* Контейнер для изображения и текста */
+  width: 100%; /* Установи нужные размеры */
+  height: auto;
+  cursor: pointer;
+  overflow: hidden; /* Скрыть все, что выходит за пределы */
+}
+
+.product-item img {
+  width: 100%;
+  height: auto;
+  filter: brightness(80%);
+  display: block;
+  border-radius: 5px;
+  transition: filter 0.3s ease;
+}
+
+.product-item img:hover {
+  
+  filter: brightness(60%);
+
+}
+
+
+.overlay-text {
+  position: absolute;
+  bottom: 10px; /* Расположить текст ближе к низу, можно менять значение */
+  left: 10px;   /* Расположить текст слева, можно менять значение */
+  color: white; /* Цвет текста */
+  font-size: 18px; /* Размер текста, можно подстроить */
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон для текста */
+  padding: 5px 10px; /* Отступы внутри текста */
+  border-radius: 5px; /* Скругленные углы */
+
+}
+
+
+
+
+.additional-section {
+  padding: 50px;
+  background-color: #ffffff;
+  color: #333;
+}
+  
