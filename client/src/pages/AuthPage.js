@@ -8,10 +8,12 @@ const AuthPage = () => {
   const { user } = useContext(Context);
   const navigate = useNavigate();
   const location = useLocation(); // Для получения текущего маршрута
-  const [isLogin, setIsLogin] = useState(true); // Вход по умолчанию
+  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const fromPage = location.state?.from || '/'; // Сюда перенаправим пользователя после входа
 
   useEffect(() => {
     // Проверяем текущий маршрут и переключаем режим
@@ -20,7 +22,7 @@ const AuthPage = () => {
     } else if (location.pathname === '/registration') {
       setIsLogin(false);
     }
-  }, [location.pathname]); // Срабатывает при изменении маршрута
+  }, [location.pathname]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +38,7 @@ const AuthPage = () => {
         user.setUser(data);
       });
       user.setIsAuth(true);
-      navigate('/'); // Перенаправление на главную страницу после успешного входа/регистрации
+      navigate(fromPage); // Перенаправляем на страницу, с которой пришел пользователь
     } catch (err) {
       setError(err.response?.data?.message || 'Ошибка');
     }

@@ -68,11 +68,11 @@ class ProductController {
     }            
 
     async getAll(req, res) {
-        let { categoryId, typeId, colorIds, syzeIds, limit, page } = req.query;
+        let { categoryId, typeId, colorIds, syzeIds, limit, page, sortBy } = req.query;
         page = page || 1;
         limit = limit || 9;
         let offset = page * limit - limit;
-    
+        
         let where = {};
         let include = [
             {
@@ -90,11 +90,10 @@ class ProductController {
             }
         ];
     
-        // Фильтрация по обязательным полям categoryId и typeId
-        if (categoryId) where.categoryId = categoryId;
-        if (typeId) where.typeId = typeId;
+        if (categoryId) where.categoryId = parseInt(categoryId, 10);
+        if (typeId) where.typeId = parseInt(typeId, 10);
+
     
-        // Фильтрация по цветам
         if (colorIds) {
             if (typeof colorIds === 'string') {
                 colorIds = JSON.parse(colorIds);
@@ -106,7 +105,6 @@ class ProductController {
             });
         }
     
-        // Фильтрация по размерам
         if (syzeIds) {
             if (typeof syzeIds === 'string') {
                 syzeIds = JSON.parse(syzeIds);
@@ -118,11 +116,21 @@ class ProductController {
             });
         }
     
+        // Логика сортировки
+        let order = [];
+        if (sortBy) {
+            const [field, direction] = sortBy.split('-'); // например, price-asc или name-desc
+            order.push([field, direction.toUpperCase()]); // Sequelize ожидает формат [поле, порядок]
+        } else {
+            order.push(['createdAt', 'DESC']); // По умолчанию сортировать по дате создания
+        }
+    
         const products = await Product.findAndCountAll({
             where,
             limit,
             offset,
             include,
+            order,
         });
     
         return res.json(products);
