@@ -88,15 +88,15 @@ function Header() {
             <div className="dropdown-content">
               <div className="column">
                 <h3>Одежда</h3>
-                <p onClick={() => navigateToShop('male', 'tshirts')}>Футболки</p>
-                <p onClick={() => navigateToShop('male', 'hoodies')}>Худи</p>
-                <p onClick={() => navigateToShop('male', 'trousers')}>Трико</p>
-                <p onClick={() => navigateToShop('male', 'shorts')}>Шорты</p>
+                <p onClick={() => navigateToShop('1', '1')}>Футболки</p>
+                <p onClick={() => navigateToShop('1', '2')}>Худи</p>
+                <p onClick={() => navigateToShop('1', '3')}>Трико</p>
+                <p onClick={() => navigateToShop('1', '4')}>Шорты</p>
               </div>
               <div className="column">
                 <h3>Аксессуары</h3>
-                <p onClick={() => navigateToShop('accessories', 'wraps')}>Обмотки</p>
-                <p onClick={() => navigateToShop('accessories', 'belts')}>Пояса для зала</p>
+                <p onClick={() => navigateToShop('3', '5')}>Обмотки</p>
+                <p onClick={() => navigateToShop('3', '6')}>Пояса для зала</p>
               </div>
             </div>
           )}
@@ -104,15 +104,15 @@ function Header() {
             <div className="dropdown-content">
               <div className="column">
                 <h3>Одежда</h3>
-                <p onClick={() => navigateToShop('female', 'tshirts')}>Футболки</p>
-                <p onClick={() => navigateToShop('female', 'hoodies')}>Худи</p>
-                <p onClick={() => navigateToShop('female', 'trousers')}>Трико</p>
-                <p onClick={() => navigateToShop('female', 'shorts')}>Шорты</p>
+                <p onClick={() => navigateToShop('2', '1')}>Футболки</p>
+                <p onClick={() => navigateToShop('2', '2')}>Худи</p>
+                <p onClick={() => navigateToShop('2', '3')}>Трико</p>
+                <p onClick={() => navigateToShop('2', '4')}>Шорты</p>
               </div>
               <div className="column">
                 <h3>Аксессуары</h3>
-                <p onClick={() => navigateToShop('accessories', 'wraps')}>Обмотки</p>
-                <p onClick={() => navigateToShop('accessories', 'belts')}>Пояса для зала</p>
+                <p onClick={() => navigateToShop('3', '5')}>Обмотки</p>
+                <p onClick={() => navigateToShop('3', '6')}>Пояса для зала</p>
               </div>
             </div>
           )}
@@ -120,8 +120,8 @@ function Header() {
             <div className="dropdown-content">
               <div className="column">
                 <h3>Аксессуары</h3>
-                <p onClick={() => navigateToShop('accessories', 'wraps')}>Обмотки</p>
-                <p onClick={() => navigateToShop('accessories', 'belts')}>Пояса для зала</p>
+                <p onClick={() => navigateToShop('3', '5')}>Обмотки</p>
+                <p onClick={() => navigateToShop('3', '6')}>Пояса для зала</p>
               </div>
             </div>
           )}
