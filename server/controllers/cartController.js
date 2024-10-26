@@ -2,22 +2,22 @@ const { Cart, Product, User } = require('../models/models');
 const ApiError = require('../error/ApiError');
 
 exports.addToCart = async (req, res) => {
-    const { userId, productId } = req.body;
+    const { productId, size } = req.body;
+    const userId = req.user.id; // Получаем userId из токена после авторизации
 
     try {
-        const user = await User.findByPk(userId);
         const product = await Product.findByPk(productId);
-
-        if (!user || !product) {
-            return res.status(404).json({ message: 'Пользователь или продукт не найдены' });
+        if (!product) {
+            return res.status(404).json({ message: 'Продукт не найден' });
         }
 
-        const cartItem = await Cart.create({ userId, productId });
+        const cartItem = await Cart.create({ userId, productId, size });
         res.status(201).json(cartItem);
     } catch (error) {
         res.status(500).json({ message: 'Ошибка добавления продукта в корзину', error });
     }
 };
+
 
 // Удаление продукта из корзины
 exports.removeFromCart = async (req, res) => {

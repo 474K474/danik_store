@@ -10,7 +10,7 @@ const Shop = () => {
   const [colors, setColors] = useState([]);
   const [sizes, setSizes] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [limit] = useState(6); // Пагинация, 6 товаров на страницу
+  const [limit] = useState(6);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,20 +19,19 @@ const Shop = () => {
   const { categoryId, typeId, colorIds, syzeIds, page, sortBy } = queryString.parse(location.search);
 
   const [selectedCategory, setSelectedCategory] = useState(categoryId || '');
-  const [selectedType, setSelectedType] = useState(typeId || ''); // Добавляем typeId
+  const [selectedType, setSelectedType] = useState(typeId || '');
   const [selectedColors, setSelectedColors] = useState(colorIds ? JSON.parse(colorIds) : []);
   const [selectedSizes, setSelectedSizes] = useState(syzeIds ? JSON.parse(syzeIds) : []);
   const [currentPage, setPage] = useState(page ? parseInt(page, 10) : 1);
   const [currentSortBy, setSortBy] = useState(sortBy || '');
 
-  // Флаг для отслеживания первого рендера
   const [isFirstRender, setIsFirstRender] = useState(true);
 
   // Обновление URL при изменении фильтров
   useEffect(() => {
     if (isFirstRender) {
       setIsFirstRender(false);
-      return; // Пропустить навигацию на первом рендере
+      return;
     }
 
     const params = queryString.stringify({
@@ -43,12 +42,16 @@ const Shop = () => {
       page: currentPage !== 1 ? currentPage : undefined,
       sortBy: currentSortBy || undefined,
     });
-    
 
-    navigate({
-      search: params,
-    });
+    navigate({ search: params });
   }, [selectedCategory, selectedType, selectedColors, selectedSizes, currentPage, currentSortBy, navigate]);
+
+  // Перезагрузка данных при изменении categoryId или typeId в URL
+  useEffect(() => {
+    setSelectedCategory(categoryId || '');
+    setSelectedType(typeId || '');
+    setPage(1);
+  }, [categoryId, typeId]);
 
   // Загрузка фильтров (категории, цвета, размеры)
   useEffect(() => {
@@ -76,7 +79,7 @@ const Shop = () => {
         const response = await $authHost.get('/api/product', {
           params: {
             categoryId: selectedCategory,
-            typeId: selectedType, // Учитываем typeId при фильтрации товаров
+            typeId: selectedType,
             colorIds: selectedColors.length ? JSON.stringify(selectedColors) : null,
             syzeIds: selectedSizes.length ? JSON.stringify(selectedSizes) : null,
             limit,
@@ -95,7 +98,7 @@ const Shop = () => {
 
   // Обработчики изменения фильтров
   const handleCategoryChange = (categoryId) => setSelectedCategory(categoryId);
-  const handleTypeChange = (typeId) => setSelectedType(typeId); // Для смены типа
+  const handleTypeChange = (typeId) => setSelectedType(typeId);
   const handleColorToggle = (colorId) => {
     setSelectedColors((prev) =>
       prev.includes(colorId) ? prev.filter((id) => id !== colorId) : [...prev, colorId]
@@ -109,19 +112,29 @@ const Shop = () => {
   const handlePageChange = (newPage) => setPage(newPage);
 
   const goToProductPage = (id) => {
-    navigate(`/product/${id}`); // Переход на страницу товара
+    navigate(`/product/${id}`);
   };
 
   // Обработчик выбора сортировки
   const handleSortChange = (e) => {
     setSortBy(e.target.value);
-    setPage(1); // Возвращаемся на первую страницу
+    setPage(1);
+  };
+
+  // Сбросить все фильтры
+  const resetFilters = () => {
+    setSelectedColors([]);
+    setSelectedSizes([]);
+    setSortBy('');
+    setPage(1);
   };
 
   return (
     <div className="shop">
       <div className="filters">
         <h2>Продукты</h2>
+
+        <button className="reset-button" onClick={resetFilters}>Убрать все</button>
 
         {/* Фильтр цветов */}
         <div className="filter-color">
@@ -178,7 +191,7 @@ const Shop = () => {
               <h3 onClick={() => goToProductPage(product.id)} style={{ cursor: 'pointer' }}>
                 {product.name}
               </h3>
-              <p>{product.price} тг</p>
+              <h6>{product.price} тг</h6>
             </div>
           ))}
         </div>

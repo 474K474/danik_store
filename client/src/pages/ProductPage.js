@@ -4,6 +4,7 @@ import { $authHost } from '../http'; // Импортируем axios с наст
 import { Context } from '../index'; // Для доступа к контексту пользователя
 import '../css/ProductPage.css';
 
+
 const ProductPage = () => {
   const { id } = useParams(); // Получение id продукта из URL
   const navigate = useNavigate(); // Используем useNavigate вместо useHistory
@@ -68,15 +69,16 @@ const ProductPage = () => {
             src={`${process.env.REACT_APP_API_URL}/static/${selectedImage}`}
             alt={product.name}
             onClick={() => setIsZoomed(!isZoomed)} // Увеличение картинки при нажатии
-            style={{ width: isZoomed ? '500px' : '300px', cursor: 'zoom-in' }}
+            style={{ width: isZoomed ? '500px' : '400px', cursor: 'zoom-in' }}
           />
         </div>
       </div>
       <div className="product-details">
         <h2>{product.name}</h2>
-        <p>Цена: {product.price} тг</p>
+        <h5>Цена: {product.price} тг</h5>
         <div className="sizes">
-          <p>Размер:</p>
+          <h6>Размер:</h6>
+          <div className='SizeButton'>
           {product.syzes.map(size => (
             <button
               key={size.id}
@@ -89,6 +91,7 @@ const ProductPage = () => {
               {size.name}
             </button>
           ))}
+          </div>
         </div>
         <button onClick={handleAddToCart} disabled={!selectedSize}>
           Добавить в корзину
