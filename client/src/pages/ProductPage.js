@@ -1,25 +1,26 @@
+// ProductPage.js
+
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { $authHost } from '../http'; // Импортируем axios с настройками авторизации
-import { Context } from '../index'; // Для доступа к контексту пользователя
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { $authHost } from '../http';
+import { Context } from '../index';
 import '../css/ProductPage.css';
 
-
 const ProductPage = () => {
-  const { id } = useParams(); // Получение id продукта из URL
-  const navigate = useNavigate(); // Используем useNavigate вместо useHistory
-  const { user } = useContext(Context); // Подключаем контекст для работы с хранилищем пользователя
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation(); // Получаем текущий маршрут
+  const { user } = useContext(Context);
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState('');
   const [selectedSize, setSelectedSize] = useState('');
   const [isZoomed, setIsZoomed] = useState(false);
 
   useEffect(() => {
-    // Загрузка информации о продукте
     $authHost.get(`/api/product/${id}`)
       .then(response => {
         setProduct(response.data);
-        setSelectedImage(response.data.images[0].fileName); // Установка первой картинки как выбранной
+        setSelectedImage(response.data.images[0].fileName);
       })
       .catch(error => {
         console.error('Ошибка при загрузке продукта:', error);
@@ -27,21 +28,26 @@ const ProductPage = () => {
   }, [id]);
 
   const handleImageClick = (image) => {
-    setSelectedImage(image); // Установка выбранного изображения
+    setSelectedImage(image);
   };
 
   const handleAddToCart = async () => {
-    // Проверка авторизации через middleware
+    if (!user.isAuth) {
+      navigate('/login', { state: { from: location.pathname } });
+      return;
+    }
+
+    if (!selectedSize) {
+      alert('Пожалуйста, выберите размер');
+      return;
+    }
+
     try {
-      await $authHost.post('/api/cart/add', { productId: id, size: selectedSize });
+      await $authHost.post('/api/cart/add', { productId: id, size: selectedSize }); // Передаем выбранный размер
       alert('Товар добавлен в корзину');
     } catch (error) {
-      if (error.response.status === 401) {
-        // Перенаправление на страницу авторизации, если пользователь не авторизован
-        navigate('/login');
-      } else {
-        console.error('Ошибка при добавлении товара в корзину:', error);
-      }
+      console.error('Ошибка при добавлении товара в корзину:', error);
+      alert('Не удалось добавить товар в корзину');
     }
   };
 
@@ -68,7 +74,7 @@ const ProductPage = () => {
           <img
             src={`${process.env.REACT_APP_API_URL}/static/${selectedImage}`}
             alt={product.name}
-            onClick={() => setIsZoomed(!isZoomed)} // Увеличение картинки при нажатии
+            onClick={() => setIsZoomed(!isZoomed)}
             style={{ width: isZoomed ? '500px' : '400px', cursor: 'zoom-in' }}
           />
         </div>
@@ -99,7 +105,7 @@ const ProductPage = () => {
         <div className="product-info">
           <h3>Информация:</h3>
           {product.info.map(info => (
-            <p key={info.title}>{info.title}: {info.description}</p>
+            <h6 className='InfoText' key={info.title}>{info.title}: {info.description}</h6>
           ))}
         </div>
       </div>

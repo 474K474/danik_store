@@ -6,6 +6,8 @@ const authMiddleware = require('../middleware/authMiddleware');
 // Получить корзину пользователя
 router.get('/', authMiddleware, cartController.getUserCart);
 
+router.post('/add', authMiddleware, cartController.addToCart);
+
 // Удалить товар из корзины
 router.delete('/remove/:productId', authMiddleware, cartController.removeFromCart);
 

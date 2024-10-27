@@ -13,8 +13,12 @@ const Cart = sequelize.define('cart', {
 })
 
 const CartProduct = sequelize.define('cart_product', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-})
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    userId: { type: DataTypes.INTEGER, allowNull: false },
+    productId: { type: DataTypes.INTEGER, allowNull: false },
+    size: { type: DataTypes.STRING, allowNull: false } // Поле для хранения выбранного размера
+});
+
 
 const Product = sequelize.define('product', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
@@ -106,8 +110,11 @@ module.exports = {
     Color,
     Syze,
     ProductInfo,
-    Image
-}
+    Image,
+    ProductColor,
+    ProductSyze
+};
+
 
 
   

@@ -96,6 +96,7 @@ const Shop = () => {
     fetchProducts();
   }, [selectedCategory, selectedType, selectedColors, selectedSizes, currentPage, limit, currentSortBy]);
 
+  
   // Обработчики изменения фильтров
   const handleCategoryChange = (categoryId) => setSelectedCategory(categoryId);
   const handleTypeChange = (typeId) => setSelectedType(typeId);
@@ -182,18 +183,21 @@ const Shop = () => {
       {/* Отображение товаров */}
       <div className="product-card">
         <div className="products">
-          {products.map((product) => (
-            <div key={product.id} className="product">
-              <img
-                src={`${process.env.REACT_APP_API_URL}/static/${product.images[0]?.fileName}`}
-                alt={product.name}
-              />
-              <h3 onClick={() => goToProductPage(product.id)} style={{ cursor: 'pointer' }}>
-                {product.name}
-              </h3>
-              <h6>{product.price} тг</h6>
-            </div>
-          ))}
+        {products.map((product) => (
+  <div key={product.id} className="product">
+    <img
+      src={`${process.env.REACT_APP_API_URL}/static/${product.images[0]?.fileName}`}
+      alt={product.name}
+      onClick={() => goToProductPage(product.id)}
+      style={{ cursor: 'pointer' }}
+    />
+    <h3 onClick={() => goToProductPage(product.id)} style={{ cursor: 'pointer' }}>
+      {product.name}
+    </h3>
+    <h6>{product.price} тг</h6>
+  </div>
+))}
+
         </div>
 
         {/* Пагинация */}

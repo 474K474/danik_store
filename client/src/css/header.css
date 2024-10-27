@@ -7,6 +7,7 @@
     padding: 10px 20px;
     background-color: white;
     border-bottom: 1px solid #e5e5e5;
+    font-family: 'Exo 2', sans-serif;
   }
   
   .header-logo img {
@@ -15,15 +16,20 @@
   }
   
   .header-nav {
-    font-family: 'Exo 2', ;
     display: flex;
     gap: 20px;
   }
   
   .header-nav a {
     text-decoration: none;
-    color: black;
+    color: black; /* Черный цвет текста по умолчанию */
     font-weight: bold;
+    transition: color 0.3s; /* Плавный переход цвета */
+  }
+  
+  .header-nav a:hover {
+    color: gray; /* Серый цвет текста при наведении */
+    cursor: pointer; /* Показ указателя при наведении */
   }
   
   .header-search {

@@ -1,13 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+
 .footer {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-    background-color: white;
-    border: 5px solid #ddd;
-  }
-  
-  .footer img {
-    width: 50px;
-    height: 50px;
-    margin: 0 10px;
-  }
+  font-family: 'Exo 2', sans-serif;
+  padding: 20px;
+  text-align: right;
+  width: 100%;
+  border-top: 4px solid #ccc; /* Разделительная полоса */
+  background-color: #f9f9f9;
+}
+
+.footer-contacts {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.footer-contacts span {
+  margin-right: 10px;
+}
+
+.footer-icon {
+  width: 24px;
+  height: 24px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+/* Основные стили для макета */
+body, html {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin-top: auto;
+}
+

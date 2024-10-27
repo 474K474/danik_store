@@ -7,22 +7,22 @@ import '../css/AuthPage.css';
 const AuthPage = () => {
   const { user } = useContext(Context);
   const navigate = useNavigate();
-  const location = useLocation(); // Для получения текущего маршрута
+  const location = useLocation(); // Получение объекта location
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const fromPage = location.state?.from || '/'; // Сюда перенаправим пользователя после входа
+  // Проверка маршрута с учетом возможного отсутствия location
+  const fromPage = location?.state?.from || '/';
 
   useEffect(() => {
-    // Проверяем текущий маршрут и переключаем режим
-    if (location.pathname === '/login') {
+    if (location?.pathname === '/login') {
       setIsLogin(true);
-    } else if (location.pathname === '/registration') {
+    } else if (location?.pathname === '/registration') {
       setIsLogin(false);
     }
-  }, [location.pathname]);
+  }, [location?.pathname]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +38,7 @@ const AuthPage = () => {
         user.setUser(data);
       });
       user.setIsAuth(true);
-      navigate(fromPage); // Перенаправляем на страницу, с которой пришел пользователь
+      navigate(fromPage); // Перенаправление на страницу, с которой пришел пользователь
     } catch (err) {
       setError(err.response?.data?.message || 'Ошибка');
     }
