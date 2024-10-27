@@ -13,13 +13,12 @@ exports.addToCart = async (req, res) => {
             where: { userId, productId, size }
         });
 
-        if (existingCartItem) {
-            return res.status(400).json({ message: 'Товар уже добавлен в корзину с этим размером' });
-        }
 
         const cartItem = await CartProduct.create({ userId, productId, size });
         res.status(201).json(cartItem);
     } catch (error) {
+        console.log(productId, size );
+        
         res.status(500).json({ message: 'Ошибка добавления продукта в корзину', error });
     }
 };

@@ -46,7 +46,7 @@ function Header() {
           <img src={require('../assets/logo.jpg')} alt="Logo" />
         </div>
         <nav className="header-nav">
-          <a onMouseEnter={() => handleMouseEnter('female')}>Мужчинам</a>
+          <a onMouseEnter={() => handleMouseEnter('male')}>Мужчинам</a>
           <a onMouseEnter={() => handleMouseEnter('female')}>Женщинам</a>
           <a onMouseEnter={() => handleMouseEnter('accessories')}>Аксессуары</a>
         </nav>

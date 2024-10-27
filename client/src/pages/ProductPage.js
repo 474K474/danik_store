@@ -1,10 +1,9 @@
-// ProductPage.js
-
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { $authHost } from '../http';
 import { Context } from '../index';
 import '../css/ProductPage.css';
+import { addToCart } from '../http/cartAPI';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -36,14 +35,14 @@ const ProductPage = () => {
       navigate('/login', { state: { from: location.pathname } });
       return;
     }
-
+  
     if (!selectedSize) {
       alert('Пожалуйста, выберите размер');
       return;
     }
-
+  
     try {
-      await $authHost.post('/api/cart/add', { productId: id, size: selectedSize }); // Передаем выбранный размер
+      await addToCart(user.user.id, product.id, selectedSize); // Используем функцию из cartAPI
       alert('Товар добавлен в корзину');
     } catch (error) {
       console.error('Ошибка при добавлении товара в корзину:', error);
