@@ -1,9 +1,7 @@
-const { Cart, Product, User } = require('../models/models');
-const ApiError = require('../error/ApiError');
-
+// Контроллер корзины
 exports.addToCart = async (req, res) => {
     const { productId, size } = req.body;
-    const userId = req.user.id; // Получаем userId из токена после авторизации
+    const userId = req.user.id;
 
     try {
         const product = await Product.findByPk(productId);
@@ -11,20 +9,27 @@ exports.addToCart = async (req, res) => {
             return res.status(404).json({ message: 'Продукт не найден' });
         }
 
-        const cartItem = await Cart.create({ userId, productId, size });
+        const existingCartItem = await CartProduct.findOne({
+            where: { userId, productId, size }
+        });
+
+        if (existingCartItem) {
+            return res.status(400).json({ message: 'Товар уже добавлен в корзину с этим размером' });
+        }
+
+        const cartItem = await CartProduct.create({ userId, productId, size });
         res.status(201).json(cartItem);
     } catch (error) {
         res.status(500).json({ message: 'Ошибка добавления продукта в корзину', error });
     }
 };
 
-
-// Удаление продукта из корзины
 exports.removeFromCart = async (req, res) => {
-    const { userId, productId } = req.body;
+    const { productId } = req.params;
+    const userId = req.user.id;
 
     try {
-        const cartItem = await Cart.findOne({ where: { userId, productId } });
+        const cartItem = await CartProduct.findOne({ where: { userId, productId } });
 
         if (!cartItem) {
             return res.status(404).json({ message: 'Продукт не найден' });
@@ -37,14 +42,13 @@ exports.removeFromCart = async (req, res) => {
     }
 };
 
-// Получение всех товаров в корзине пользователя
 exports.getUserCart = async (req, res) => {
-    const { userId } = req.params;
+    const userId = req.user.id;
 
     try {
-        const cartItems = await Cart.findAll({
+        const cartItems = await CartProduct.findAll({
             where: { userId },
-            include: [Product] // Включаем данные о продуктах
+            include: [Product]
         });
 
         res.status(200).json(cartItems);
@@ -53,11 +57,9 @@ exports.getUserCart = async (req, res) => {
     }
 };
 
-
-// Увеличение количества товара в корзине
 exports.increaseQuantity = async (req, res) => {
     const { productId } = req.params;
-    const { userId } = req.user;  // Получаем ID пользователя из токена
+    const userId = req.user.id;
 
     try {
         const cartItem = await CartProduct.findOne({ where: { userId, productId } });
@@ -65,7 +67,7 @@ exports.increaseQuantity = async (req, res) => {
             return res.status(404).json({ message: 'Товар не найден в корзине' });
         }
 
-        cartItem.quantity += 1;  // Увеличиваем количество товара на 1
+        cartItem.quantity += 1;
         await cartItem.save();
         res.status(200).json(cartItem);
     } catch (error) {
@@ -73,11 +75,9 @@ exports.increaseQuantity = async (req, res) => {
     }
 };
 
-
-// Уменьшение количества товара в корзине
 exports.decreaseQuantity = async (req, res) => {
     const { productId } = req.params;
-    const { userId } = req.user;  // Получаем ID пользователя из токена
+    const userId = req.user.id;
 
     try {
         const cartItem = await CartProduct.findOne({ where: { userId, productId } });
@@ -86,11 +86,10 @@ exports.decreaseQuantity = async (req, res) => {
         }
 
         if (cartItem.quantity > 1) {
-            cartItem.quantity -= 1;  // Уменьшаем количество товара на 1
+            cartItem.quantity -= 1;
             await cartItem.save();
             res.status(200).json(cartItem);
         } else {
-            // Если количество товара == 1, можно его удалить
             await cartItem.destroy();
             res.status(200).json({ message: 'Товар удален из корзины' });
         }
