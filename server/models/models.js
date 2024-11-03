@@ -39,6 +39,7 @@ const Category = sequelize.define('category', {
 const Color = sequelize.define('color', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, unique: true, allowNull: false},
+    hexcode: {type: DataTypes.STRING, unique: true, allowNull: false},
 })
 
 const Syze = sequelize.define('syze', {

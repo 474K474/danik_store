@@ -3,8 +3,8 @@ const ApiError = require('../error/ApiError');
 
 class ColorController {
     async create(req, res) {
-        const {name} = req.body
-        const color = await Color.create({name})
+        const {name, hexcode} = req.body
+        const color = await Color.create({name, hexcode})
         return res.json(color)
     }
 

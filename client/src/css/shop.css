@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
 
 .shop {
+  font-family: 'Exo 2', sans-serif;
   display: flex;
   flex-direction: row;
   padding: 20px;
@@ -12,6 +14,24 @@
   border: 1px solid #ddd;
   background-color: #f9f9f9;
   margin-right: 20px;
+}
+
+.filters-head{
+  display: flex;
+}
+
+.reset-button {
+  color: #000;
+  cursor: pointer;
+}
+
+.sort-options{
+  display: flex;
+}
+
+.params{
+    width: 70px; /* Задайте ширину */
+  
 }
 
 .product-card {
@@ -72,9 +92,53 @@
   margin-bottom: 10px;
 }
 
-.reset-button {
-  background-color: transparent;
-  border: none;
+.SizeButton {
+  display: flex; /* Для отображения кнопок в строку */
+  flex-wrap: wrap; /* Чтобы кнопки переносились на следующую строку при переполнении */
+}
+
+.size-button {
+  background-color: #ffffff;
   color: #000;
+  border: 1px solid gray;
   cursor: pointer;
+  margin: 5px; /* Отступ между кнопками */
+  padding: 10px; /* Внутренний отступ */
+  transition: border 0.2s ease; /* Плавный переход для изменения границы */
+}
+
+.size-button.selected {
+  border: 1px solid black; /* Граница для выбранной кнопки */
+}
+
+.color-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.color{
+  display: flex;
+  flex-direction: column;
+}
+
+.color-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border 0.2s ease;
+}
+
+.color-circle.selected {
+  border-color: black;
+}
+
+.color-label {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 5px;
+  display: inline-block;
+  width: 40px; /* Совпадает с шириной круга */
 }

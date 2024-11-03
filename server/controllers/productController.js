@@ -5,6 +5,7 @@ const ApiError = require('../error/ApiError');
 const imageController = require('./ImageController');
 
 class ProductController {
+    
     async create(req, res, next) {
         try {
             let { name, price, categoryId, typeId, colorIds, syzeIds, info } = req.body;
@@ -150,6 +151,7 @@ class ProductController {
         });
         return res.json(product);
     }
+
 }
 
 module.exports = new ProductController();

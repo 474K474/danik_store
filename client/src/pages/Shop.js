@@ -133,44 +133,48 @@ const Shop = () => {
   return (
     <div className="shop">
       <div className="filters">
+        <div className='filters-head'>
         <h2>Продукты</h2>
-
-        <button className="reset-button" onClick={resetFilters}>Убрать все</button>
-
+        <p className="reset-button" onClick={resetFilters}>Убрать все фильтры</p>
+        </div>
         {/* Фильтр цветов */}
         <div className="filter-color">
-          <h3>Цвета</h3>
-          {colors.map((color) => (
-            <label key={color.id}>
-              <input
-                type="checkbox"
-                checked={selectedColors.includes(color.id)}
-                onChange={() => handleColorToggle(color.id)}
-              />
-              {color.name}
-            </label>
-          ))}
+          <h4>Цвета</h4>
+
+          <div className="color-options">
+            {colors.map((color) => (
+              <div classname="color"><div
+                key={color.id}
+                className={`color-circle ${selectedColors.includes(color.id) ? 'selected' : ''}`}
+                style={{ backgroundColor: color.hexcode }} // предполагается, что у цвета есть поле hexCode
+                onClick={() => handleColorToggle(color.id)}
+              ></div><span className="color-label">{color.name}</span></div>
+            ))}
+          </div>
         </div>
 
         {/* Фильтр размеров */}
         <div className="filter-size">
-          <h3>Размеры</h3>
-          {sizes.map((size) => (
-            <label key={size.id}>
-              <input
-                type="checkbox"
-                checked={selectedSizes.includes(size.id)}
-                onChange={() => handleSizeToggle(size.id)}
-              />
-              {size.name}
-            </label>
-          ))}
+          <h4>Размеры</h4>
+          <div className='SizeButton'>
+              {sizes.map((size) => (
+              <button
+                key={size.id}
+                onClick={() => handleSizeToggle(size.id)}
+                className={`size-button ${selectedSizes.includes(size.id) ? 'selected' : ''}`}
+              >
+                {size.name}
+              </button>
+            ))}
+          </div>
+
+                    
         </div>
 
         {/* Сортировка */}
         <div className="sort-options">
-          <h3>Сортировать по:</h3>
-          <select value={currentSortBy} onChange={handleSortChange}>
+          <h4>Сортировать по:</h4>
+          <select className='params' value={currentSortBy} onChange={handleSortChange}>
             <option value="">Без сортировки</option>
             <option value="price-asc">Цена (по возрастанию)</option>
             <option value="price-desc">Цена (по убыванию)</option>

@@ -4,13 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { Context } from '../index'; // Используем контекст для работы с авторизацией и данными
 import CartItems from './CartItems.js'; // Импортируем компонент CartItems
 import { fetchUserData, logout } from '../http/userAPI'; 
+import { fetchProductByName, fetchProductById } from '../http/productAPI'; // Импорт API для поиска продуктов
 
 
 function Header() {
-  const { user } = useContext(Context); // Подключаем контекст для работы с авторизацией
+  const { user } = useContext(Context);
   const [activeMenu, setActiveMenu] = useState(null);
-  const [showCart, setShowCart] = useState(false);  // Окно корзины
-  const [showAccount, setShowAccount] = useState(false);  // Окно аккаунта
+  const [showCart, setShowCart] = useState(false);
+  const [showAccount, setShowAccount] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(''); // Для строки поиска
+  const [errorMessage, setErrorMessage] = useState(''); // Сообщение об ошибке
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,6 +42,34 @@ function Header() {
     navigate('/');
   };
 
+  const handleSearch = async () => {
+    const searchInput = document.getElementById("search-input");
+  
+    searchInput.setCustomValidity("");
+    setErrorMessage('');
+  
+    try {
+        let product;
+            // Проверка на ID
+            product = await fetchProductById(searchQuery);
+  
+
+        // Если продукт найден, переходим на его страницу
+        if (product && product.id) {
+            navigate(`/product/${product.id}`);
+            setSearchQuery('');
+        } else {
+            searchInput.setCustomValidity("Товар не найден");
+            searchInput.reportValidity();
+        }
+    } catch (error) {
+        searchInput.setCustomValidity("Ошибка при выполнении поиска");
+        searchInput.reportValidity();
+    }
+};
+
+  
+
   return (
     <>
       <header className="header">
@@ -52,11 +83,21 @@ function Header() {
         </nav>
 
         <div className="header-search">
-          <input type="text" placeholder="Поиск" />
-          <button>
+          <input
+            id="search-input" // Добавляем id для идентификации элемента
+            type="text"
+            placeholder="Поиск по ID" 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            pattern="\d+|[A-Za-zА-Яа-я]+"
+            title="Введите ID продукта"
+            required
+          />
+          <button onClick={handleSearch}>
             <img src={require('../assets/search.png')} alt="search-icon" />
           </button>
         </div>
+
 
         <div className="header-icons">
           {/* Иконка аккаунта */}
