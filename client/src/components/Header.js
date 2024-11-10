@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Context } from '../index'; // Используем контекст для работы с авторизацией и данными
 import CartItems from './CartItems.js'; // Импортируем компонент CartItems
 import { fetchUserData, logout } from '../http/userAPI'; 
-import { fetchProductByName, fetchProductById } from '../http/productAPI'; // Импорт API для поиска продуктов
+import { fetchProductById } from '../http/productAPI'; // Импорт API для поиска продуктов
+import { fetchCartItems, removeCartItem } from '../http/cartAPI';
 
 
 function Header() {
@@ -14,6 +15,7 @@ function Header() {
   const [showAccount, setShowAccount] = useState(false);
   const [searchQuery, setSearchQuery] = useState(''); // Для строки поиска
   const [errorMessage, setErrorMessage] = useState(''); // Сообщение об ошибке
+  const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,6 +23,31 @@ function Header() {
       user.setUser(data)      
     })
   }, []);
+
+  // Загружаем данные корзины единожды
+  useEffect(() => {
+    if (user.user) {
+      const loadCartItems = async () => {
+        try {
+          const items = await fetchCartItems(user.user.id);
+          setCartItems(items);
+        } catch (error) {
+          console.error('Ошибка при загрузке корзины:', error);
+        }
+      };
+      loadCartItems();
+    }
+  }, [user.user]);
+
+  // Обновляем данные корзины
+  const handleRemoveCartItem = async (cartItemId) => {
+    try {
+      await removeCartItem(cartItemId);
+      setCartItems((prevItems) => prevItems.filter((item) => item.id !== cartItemId));
+    } catch (error) {
+      console.error('Ошибка при удалении товара из корзины:', error);
+    }
+  };
   
   const navigateToShop = (category, type) => {
     setActiveMenu(null);
@@ -34,6 +61,7 @@ function Header() {
   const handleMouseLeave = () => {
     setActiveMenu(null);
   };
+
 
   const handleLogout = () => {
     user.setUser({});
@@ -115,6 +143,7 @@ function Header() {
             onMouseEnter={() => setShowCart(true)} 
             onMouseLeave={() => setShowCart(false)} 
           />
+          <span className="cart-count">{cartItems.length}</span>
         </div>
       </header>
 
@@ -170,7 +199,7 @@ function Header() {
       )}
 
       {/* Всплывающее меню аккаунта */}
-      {showAccount && (
+      { showAccount && (
         <div className="account-popup account-popup-active" onMouseEnter={() => setShowAccount(true)} onMouseLeave={() => setShowAccount(false)}>
           <h3>Аккаунт</h3>
           {user.user ? (
@@ -192,9 +221,12 @@ function Header() {
         <div className="cart-popup cart-popup-active" onMouseEnter={() => setShowCart(true)} onMouseLeave={() => setShowCart(false)}>
           <h3>Корзина</h3>
           {user.user ? (
-            <CartItems userId={user.user.id} />
+            <CartItems
+              cartItems={cartItems}
+              onRemoveItem={handleRemoveCartItem}
+            />
           ) : (
-            <p>Пожалуйста, войдите для просмотра корзины</p>
+            <p>Войдите для просмотра корзины</p>
           )}
         </div>
       )}

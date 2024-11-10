@@ -1,9 +1,16 @@
-import { $authHost } from './index.js';  // Используем авторизованный хост
+import { $authHost } from './index.js'; 
 
-// Функция для добавления товара в корзину
-export const addToCart = async (productId, size) => {
+
+export const fetchCart = async (userId) => {
+    const { data } = await $authHost.get(`/cart/${userId}`);
+    return data;
+};
+
+
+// Функция для добавления товара в корзину// Функция для добавления товара в корзину
+export const addToCart = async (userId, productId, size) => {
   try {
-    const response = await $authHost.post('/api/cart/add', { productId, size });
+    const response = await $authHost.post('/api/cart/add', { userId, productId, size });
     return response.data;
   } catch (error) {
     console.error('Ошибка при добавлении товара в корзину:', error);
@@ -11,10 +18,11 @@ export const addToCart = async (productId, size) => {
   }
 };
 
-// Функция для получения товаров в корзине
+
+// Исправляем маршрут на корректный
 export const fetchCartItems = async (userId) => {
   try {
-    const { data } = await $authHost.get(`/cart/${userId}`);  // Запрос к серверу для получения корзины
+    const { data } = await $authHost.get(`/api/cart/${userId}`);
     return data;
   } catch (error) {
     console.error('Ошибка при получении корзины:', error);
@@ -22,8 +30,8 @@ export const fetchCartItems = async (userId) => {
   }
 };
 
-// Функция для удаления товара из корзины
-export const removeFromCart = async (productId) => {
+// Исправляем маршрут удаления товара
+export const removeCartItem = async (productId) => {
   try {
     await $authHost.delete(`/api/cart/remove/${productId}`);
   } catch (error) {
@@ -31,5 +39,3 @@ export const removeFromCart = async (productId) => {
     throw error;
   }
 };
-
-// Другие функции для работы с корзиной (например, увеличение/уменьшение количества товаров) можно добавить аналогичным образом

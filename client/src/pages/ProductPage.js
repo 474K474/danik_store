@@ -31,7 +31,7 @@ const ProductPage = () => {
   };
 
   const handleAddToCart = async () => {
-    if (!user.isAuth) {
+    if (!user.user) {
       navigate('/login', { state: { from: location.pathname } });
       return;
     }
@@ -42,6 +42,7 @@ const ProductPage = () => {
     }
   
     try {
+      // Здесь мы передаем userId, productId и selectedSize в cartAPI
       await addToCart(user.user.id, product.id, selectedSize); // Используем функцию из cartAPI
       alert('Товар добавлен в корзину');
     } catch (error) {
@@ -49,6 +50,7 @@ const ProductPage = () => {
       alert('Не удалось добавить товар в корзину');
     }
   };
+  
 
   if (!product) return <div>Загрузка...</div>;
 
@@ -74,7 +76,6 @@ const ProductPage = () => {
             src={`${process.env.REACT_APP_API_URL}/static/${selectedImage}`}
             alt={product.name}
             onClick={() => setIsZoomed(!isZoomed)}
-            style={{ width: isZoomed ? '500px' : '400px', cursor: 'zoom-in' }}
           />
         </div>
       </div>

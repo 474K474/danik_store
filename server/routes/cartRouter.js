@@ -4,7 +4,7 @@ const cartController = require('../controllers/cartController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 // Получить корзину пользователя
-router.get('/', authMiddleware, cartController.getUserCart);
+router.get('/:userId', authMiddleware, cartController.getUserCart);
 
 router.post('/add', authMiddleware, cartController.addToCart);
 

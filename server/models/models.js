@@ -16,7 +16,8 @@ const CartProduct = sequelize.define('cart_product', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     userId: { type: DataTypes.INTEGER, allowNull: false },
     productId: { type: DataTypes.INTEGER, allowNull: false },
-    size: { type: DataTypes.STRING, allowNull: false } // Поле для хранения выбранного размера
+    size: { type: DataTypes.STRING, allowNull: false }, // Поле для хранения выбранного размера
+    quantity: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 }
 });
 
 
@@ -115,7 +116,4 @@ module.exports = {
     ProductColor,
     ProductSyze
 };
-
-
-
   
