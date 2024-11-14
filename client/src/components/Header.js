@@ -7,7 +7,6 @@ import { fetchUserData, logout } from '../http/userAPI';
 import { fetchProductById } from '../http/productAPI'; // Импорт API для поиска продуктов
 import { fetchCartItems, removeCartItem } from '../http/cartAPI';
 
-
 function Header() {
   const { user } = useContext(Context);
   const [activeMenu, setActiveMenu] = useState(null);
@@ -20,8 +19,8 @@ function Header() {
 
   useEffect(() => {
     fetchUserData().then((data) => {
-      user.setUser(data)      
-    })
+      user.setUser(data);
+    });
   }, []);
 
   // Загружаем данные корзины единожды
@@ -48,25 +47,24 @@ function Header() {
       console.error('Ошибка при удалении товара из корзины:', error);
     }
   };
-  
+
   const navigateToShop = (category, type) => {
     setActiveMenu(null);
     navigate(`/shop?categoryId=${category}&typeId=${type}`);
   };
 
-  const handleMouseEnter = (maleu) => {
-    setActiveMenu(maleu);
+  const handleMouseEnter = (menu) => {
+    setActiveMenu(menu);
   };
 
   const handleMouseLeave = () => {
     setActiveMenu(null);
   };
 
-
   const handleLogout = () => {
     user.setUser({});
     user.setIsAuth(false);
-    logout()
+    logout();
     navigate('/');
   };
 
@@ -81,7 +79,6 @@ function Header() {
             // Проверка на ID
             product = await fetchProductById(searchQuery);
   
-
         // Если продукт найден, переходим на его страницу
         if (product && product.id) {
             navigate(`/product/${product.id}`);
@@ -95,8 +92,6 @@ function Header() {
         searchInput.reportValidity();
     }
 };
-
-  
 
   return (
     <>
@@ -117,15 +112,14 @@ function Header() {
             placeholder="Поиск по ID" 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            pattern="\d+|[A-Za-zА-Яа-я]+"
-            title="Введите ID продукта"
+            pattern="\d+|[A-Za-zА-Яа-я]+" // Пример для поиска по ID или имени
+            title="Введите ID или имя продукта"
             required
           />
           <button onClick={handleSearch}>
             <img src={require('../assets/search.png')} alt="search-icon" />
           </button>
         </div>
-
 
         <div className="header-icons">
           {/* Иконка аккаунта */}

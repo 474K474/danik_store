@@ -62,3 +62,23 @@
     background-color: #c0392b;
   }
   
+
+  .cart-buy-button {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .cart-buy-button button {
+    background-color: #0088cc;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .cart-buy-button button:hover {
+    background-color: #005f99;
+  }
+  

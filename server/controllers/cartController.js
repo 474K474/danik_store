@@ -1,36 +1,36 @@
 const { Product, CartProduct, Syze, Color, Image } = require('../models/models');
+const { broadcastCartUpdate } = require('../index'); // Импорт WebSocket функции
 
 // Добавление продукта в корзину
 exports.addToCart = async (req, res) => {
     const { productId, size } = req.body;
     const userId = req.user.id;
-
+  
     try {
-        const product = await Product.findByPk(productId);
-        if (!product) {
-            return res.status(404).json({ message: 'Продукт не найден' });ф
-        }
-
-        // Проверка, существует ли уже такой продукт в корзине с тем же размером
-        const existingCartItem = await CartProduct.findOne({
-            where: { userId, productId, size }
-        });
-
-        if (existingCartItem) {
-            // Если товар уже в корзине, увеличиваем количество
-            existingCartItem.quantity += 1;
-            await existingCartItem.save();
-            return res.status(200).json(existingCartItem);
-        }
-
-        // Если товара нет в корзине, добавляем новый элемент с количеством 1
-        const cartItem = await CartProduct.create({ userId, productId, size, quantity: 1 });
-        res.status(201).json(cartItem);
+      const product = await Product.findByPk(productId);
+      if (!product) {
+        return res.status(404).json({ message: 'Продукт не найден' });
+      }
+  
+      const existingCartItem = await CartProduct.findOne({ where: { userId, productId, size } });
+  
+      if (existingCartItem) {
+        existingCartItem.quantity += 1;
+        await existingCartItem.save();
+      } else {
+        await CartProduct.create({ userId, productId, size, quantity: 1 });
+      }
+  
+      // Обновляем данные корзины и отправляем их через WebSocket
+      const cartItems = await CartProduct.findAll({ where: { userId } });
+      broadcastCartUpdate(userId, cartItems);
+  
+      res.status(200).json({ message: 'Продукт добавлен в корзину' });
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: 'Ошибка добавления продукта в корзину', error });
+      console.error('Ошибка добавления в корзину:', error);
+      res.status(500).json({ message: 'Ошибка сервера' });
     }
-};
+  };
 
 // Удаление продукта из корзины
 exports.removeFromCart = async (req, res) => {
@@ -45,6 +45,10 @@ exports.removeFromCart = async (req, res) => {
         }
 
         await cartItem.destroy();
+
+        const updatedCart = await getCartForUser(userId); // Получение обновленной корзины
+        broadcastCartUpdate(userId, updatedCart); // Отправка обновления через WebSocket
+
         res.status(200).json({ message: 'Продукт удален из корзины' });
     } catch (error) {
         res.status(500).json({ message: 'Ошибка удаления продукта из корзины', error });
