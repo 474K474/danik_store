@@ -30,12 +30,12 @@ export const fetchCartItems = async (userId) => {
   }
 };
 
-// Исправляем маршрут удаления товара
 export const removeCartItem = async (productId) => {
   try {
-    await $authHost.delete(`/api/cart/remove/${productId}`);
+    const response = await $authHost.delete(`/api/cart/remove/${productId}`);
+    return response.data;
   } catch (error) {
-    console.error('Ошибка при удалении товара из корзины:', error);
+    console.error('Ошибка при удалении продукта из корзины:', error);
     throw error;
   }
 };
