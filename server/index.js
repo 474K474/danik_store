@@ -18,6 +18,16 @@ app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use(fileUpload({}));
 app.use('/api', router);
 
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client-build')));
+
+  // Любой маршрут, кроме API, должен возвращать index.html
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client-build', 'index.html'));
+  });
+}
+
 // Обработка ошибок (последний Middleware)
 app.use(errorHandler);
 
