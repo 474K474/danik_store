@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/static/css/main.dd0aeb85.css",
+    "main.js": "/static/js/main.e335a080.js",
+    "static/media/nike.png": "/static/media/nike.b4c68c8d3ec8a3c37257.png",
+    "static/media/female-clothes.png": "/static/media/female-clothes.2cf3ea0d75604d6535d2.png",
+    "static/media/male-clothes.png": "/static/media/male-clothes.9ded3a69327df6884dfc.png",
+    "static/media/gymshark.png": "/static/media/gymshark.fae540fc9ff67f2e4a41.png",
+    "static/media/logo.jpg": "/static/media/logo.7494b3dfc36a9736db33.jpg",
+    "static/media/mainLogo.png": "/static/media/mainLogo.9a96ce0f0346c21c9666.png",
+    "index.html": "/index.html",
+    "main.dd0aeb85.css.map": "/static/css/main.dd0aeb85.css.map",
+    "main.e335a080.js.map": "/static/js/main.e335a080.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.dd0aeb85.css",
+    "static/js/main.e335a080.js"
+  ]
+}
