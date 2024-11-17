@@ -4,8 +4,8 @@
     "scripts": {
         "start": "node server/index.js",
         "server": "nodemon server/index.js",
-        "client": "npm start --prefix client",
-        "build": "npm run build --prefix client",
+        "client": "npm start",
+        "build": "npm run build",
         "dev": "concurrently \"npm run server\" \"npm run client\""
     },
     "dependencies": {
