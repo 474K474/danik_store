@@ -24,7 +24,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postbuild": "cp -r ./source_folder ./destination_folder || xcopy ./source_folder ./destination_folder"    
+    "postbuild": "cp -r build ../server/client-build/ || xcopy /E /I build ..\\server\\client-build\\"
+    
   },
   "eslintConfig": {
     "extends": [
