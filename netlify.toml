@@ -1,0 +1,20 @@
+[build]
+  # Команда для сборки фронтенда
+  command = "npm run build --prefix client"
+  # Путь для публикации собранного фронтенда
+  publish = "client/build"
+  # Переменные окружения для правильной сборки
+  environment = { NODE_ENV = "production" }
+
+[[redirects]]
+  # Перенаправление всех запросов на backend
+  from = "/api/*"
+  to = "http://localhost:5000/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  # SPA fallback для React
+  from = "/*"
+  to = "/index.html"
+  status = 200
