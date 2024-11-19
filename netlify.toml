@@ -1,6 +1,6 @@
 [build]
   # Команда для сборки фронтенда
-  command = "npm run build --prefix client"
+  command = "npm install --prefix client && npm run build --prefix client"
   # Путь для публикации собранного фронтенда
   publish = "client/build"
   # Переменные окружения для правильной сборки
